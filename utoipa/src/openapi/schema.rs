@@ -314,6 +314,10 @@ builder! {
         #[serde(rename = "oneOf")]
         pub items: Vec<RefOr<Schema>>,
 
+        /// Changes the [`Object`] title.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub title: Option<String>,
+
         /// Description of the [`OneOf`]. Markdown syntax is supported.
         #[serde(skip_serializing_if = "Option::is_none")]
         pub description: Option<String>,
@@ -376,6 +380,11 @@ impl OneOfBuilder {
         self
     }
 
+    /// Add or change the title of the [`OneOf`].
+    pub fn title<I: Into<String>>(mut self, title: Option<I>) -> Self {
+        set_value!(self title title.map(|title| title.into()))
+    }
+
     /// Add or change optional description for `OneOf` component.
     pub fn description<I: Into<String>>(mut self, description: Option<I>) -> Self {
         set_value!(self description description.map(|description| description.into()))
@@ -433,6 +442,10 @@ builder! {
         /// Components of _AllOf_ component.
         #[serde(rename = "allOf")]
         pub items: Vec<RefOr<Schema>>,
+
+        /// Changes the [`AllOf`] title.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub title: Option<String>,
 
         /// Description of the [`AllOf`]. Markdown syntax is supported.
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -493,6 +506,11 @@ impl AllOfBuilder {
         self.items.push(component.into());
 
         self
+    }
+
+    /// Add or change the title of the [`AllOf`].
+    pub fn title<I: Into<String>>(mut self, title: Option<I>) -> Self {
+        set_value!(self title title.map(|title| title.into()))
     }
 
     /// Add or change optional description for `AllOf` component.
@@ -1001,6 +1019,10 @@ builder! {
         #[serde(rename = "type")]
         pub schema_type: SchemaType,
 
+        /// Changes the [`Array`] title.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub title: Option<String>,
+
         /// Schema representing the array items type.
         pub items: Box<RefOr<Schema>>,
 
@@ -1078,6 +1100,11 @@ impl ArrayBuilder {
     /// Set [`Schema`] type for the [`Array`].
     pub fn items<I: Into<RefOr<Schema>>>(mut self, component: I) -> Self {
         set_value!(self items Box::new(component.into()))
+    }
+
+    /// Add or change the title of the [`Array`].
+    pub fn title<I: Into<String>>(mut self, title: Option<I>) -> Self {
+        set_value!(self title title.map(|title| title.into()))
     }
 
     /// Add or change description of the property. Markdown syntax is supported.
